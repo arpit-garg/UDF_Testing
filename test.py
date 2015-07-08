@@ -4,9 +4,9 @@ import numpy as nm
 
 
 def test():
-	df = pandas.read_csv("../sample_data_set/Sheet1.csv")
+	df = pandas.read_csv("../sample_data_set.csv")
 	#print df
-	df1 = df.drop(['Unnamed: 2','Unnamed: 3','Unnamed: 4'], axis = 1)
+	df1 = df.dropna(axis = 1)
 	y = Series(df['CAID'].unique())
 	
 	#print y[345]
@@ -16,7 +16,7 @@ def test():
 	
 	
 	
-	for i in range(0,1):
+	for i in range(0,5):
 		
 		df2 = df1[df1['CAID'] == y[i]]
 		
@@ -26,19 +26,23 @@ def test():
 		
 		data_len = len(df2)
 		print data_len
-		#first_name = df1['Merchant Name'][i]
-		#print first_name
-		#name1_len = len(df1['name'][i])
-		#print name1_len
-		#print len(df2['Merchant Name'][0])
-		
+		"""
+		first_index = x[0]
+		first_name = df1['Name'][x[2]]
+		print first_name
+		name1_len = len(first_name)
+		print name1_len
+		"""
+	
 		for j in range(1, data_len):
+				
+			
 			for x1 in x:
 				
-				if len(df2['Merchant Name'][x1]) == len(df2['Merchant Name'][0]):
-				
-					df2['Merchant Name'][x1] = df2['Merchant Name'][0]
-					
+				if len(df2.loc[x1, 'Name']) >= len(df2.loc[x[0], 'Name']):
+					name = df2.loc[x[0],'Name']
+					df2.loc[x1, 'Name'] = name
+			
 		print df2
 
 

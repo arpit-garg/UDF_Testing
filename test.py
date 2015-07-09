@@ -1,5 +1,6 @@
 from pandas import *
 import numpy as nm
+import re
 
 
 
@@ -14,10 +15,11 @@ def test():
 	leng = len(y)
 	#print leng
 	
+	df2 = DataFrame
 	
-	
-	for i in range(0,5):
+	for i in range(0,1):
 		
+		#df2.append(df1[df1['CAID'] == y[i]], ignore_index=True)
 		df2 = df1[df1['CAID'] == y[i]]
 		
 		print df2
@@ -26,6 +28,9 @@ def test():
 		
 		data_len = len(df2)
 		print data_len
+		
+	#df2.to_csv("output.csv")
+		
 		"""
 		first_index = x[0]
 		first_name = df1['Name'][x[2]]
@@ -34,17 +39,41 @@ def test():
 		print name1_len
 		"""
 	
-		for j in range(1, data_len):
+		result = []
+		for x1 in x:
 				
+			#result = Series(re.split("\\W+|\\s+|\\d+", df2.loc[x1, 'Name']))
+			#result = re.split("\\W+|\\s+|\\d+", df2.loc[x1, 'Name'])
+			result.append(re.split("\\W+|\\s+|\\d+", df2.loc[x1, 'Name']))
 			
-			for x1 in x:
+			count = 1 #By default each Merchant name occurs 1 time
+		
+		for i in range(0, len(result)-1):
+			
+			#print result[i]
+			#print len(result[i])
+			
+			#comparing each split within
+			for j,k in zip((0, len(result[i])), (0, len(result[i+1]))):	
+			
+				if result[i][j] == result[i+1][k]:
+					print result[i][j] + "==" +result[i+1][k]
 				
+				
+				
+			#result_df = DataFrame(result)
+		#print result_df
+#def patt_matching():
+	
+	
+
+"""				
 				if len(df2.loc[x1, 'Name']) >= len(df2.loc[x[0], 'Name']):
 					name = df2.loc[x[0],'Name']
 					df2.loc[x1, 'Name'] = name
 			
 		print df2
-
+"""
 
 if __name__ == "__main__":
 	test()

@@ -5,7 +5,7 @@ import re
 
 
 def test():
-	df = pandas.read_csv("../sample_data_set.csv")
+	df = pandas.read_csv("../sample_data_set/Sheet1.csv")
 	#print df
 	df1 = df.dropna(axis = 1)
 	y = Series(df['CAID'].unique())
@@ -57,8 +57,13 @@ def test():
 			for j,k in zip((0, len(result[i])), (0, len(result[i+1]))):	
 			
 				if result[i][j] == result[i+1][k]:
-					print result[i][j] + "==" +result[i+1][k]
-				
+					try:
+					
+						print result[i][j] + "==" + result[i+1][k]
+					except e:
+						result[i][j] + "==" + result[i+1][k]
+
+
 				
 				
 			#result_df = DataFrame(result)
@@ -67,13 +72,7 @@ def test():
 	
 	
 
-"""				
-				if len(df2.loc[x1, 'Name']) >= len(df2.loc[x[0], 'Name']):
-					name = df2.loc[x[0],'Name']
-					df2.loc[x1, 'Name'] = name
-			
-		print df2
-"""
+
 
 if __name__ == "__main__":
 	test()

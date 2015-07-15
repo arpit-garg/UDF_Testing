@@ -17,7 +17,8 @@ def test():
 	
 	df2 = DataFrame
 	df3 = DataFrame()
-	for i in range(0,3):
+	df6 = DataFrame()
+	for i in range(0,leng):
 		
 		df2 = df1[df1['CAID'] == y[i]]
 		df3 = df3.append(df2, ignore_index=False)
@@ -47,13 +48,21 @@ def test():
 			
 		
 		
-		j = 0
-		sum = 0
 		
+		sum = 0
 		k = 0
+		df4 = DataFrame()
+		df5 = DataFrame()
 		while k < len(result)-1:
-			count = 1 #By default each Merchant name occurs 1 time
-			print "CAID: " + str(df2['CAID'][x[k]]) + "," + "result: " + str(result[k])
+			#By default each Merchant name occurs 1 time
+			count = 1 
+			
+			#print "CAID: " + str(df2['CAID'][x[k]]) + "," + "result: " + " ".join(result[k])
+			
+			d = { 'CAID': Series(df2['CAID'][x[k]]),
+				   'Name': Series(" ".join(result[k])),
+				   }
+
 			#print len(result[k])
 			
 			if result[k][0] == result[k+1][0]:
@@ -68,11 +77,25 @@ def test():
 				count = 1
 				k += 1
 			
-			sum += count
-			print "count: "+ str(count)
-		total += sum
-		print total
+			d['count'] = count
+			df4 = DataFrame(d)
 			
+			df5 = df5.append(df4)
+			sum += count
+			#print "count: "+ str(count)
+			
+		
+		df6 = df6.append(df5, ignore_index=True)
+		"""
+		if count == 1:
+			df4['CAID'] = df2['CAID'][x[k]]
+			df4['Name'] = " ".join(result[k])
+			df4['count'] = count
+		"""
+		total += sum
+		#print total
+	#print df6	
+	df6.to_csv("output_count.csv")	
 	
 
 

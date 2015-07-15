@@ -2,33 +2,31 @@ from pandas import *
 import numpy as nm
 import re
 
-
-
 def test():
 	df = pandas.read_csv("../sample_data_set.csv")
-	#print len(df)
+	print len(df)
 	df1 = df.dropna(axis = 1)
 	y = Series(df['CAID'].unique())
 	
 	#print y[345]
 	total = 0
 	leng = len(y)
-	#print leng
-	
+	print leng
+	countx = 0
 	df2 = DataFrame
 	df3 = DataFrame()
 	df6 = DataFrame()
-	for i in range(0,leng):
+	for i in range(0,10):
 		
 		df2 = df1[df1['CAID'] == y[i]]
-		df3 = df3.append(df2, ignore_index=False)
+		df3 = df3.append(df2, ignore_index=True)
 		x = df2.index
 		#print x
 		
 		data_len = len(df2)
 		#print data_len
 		
-		#df3.to_csv("output.csv")
+		#df3.to_csv("output2.csv")
 		#print len(df3)
 		
 		"""	
@@ -86,21 +84,23 @@ def test():
 			
 		
 		df6 = df6.append(df5, ignore_index=True)
-		"""
+		
 		if count == 1:
 			df4['CAID'] = df2['CAID'][x[k]]
 			df4['Name'] = " ".join(result[k])
 			df4['count'] = count
-		"""
+			countx +=1
 		total += sum
-		#print total
+		print "total: " +str(total)
 	#print df6	
 	df6.to_csv("output_count.csv")	
+	print "count: "+str(countx)
 	
+		
 
-
-if __name__ == "__main__":
-	test()
+if __name__ == '__main__':
+	import timeit
+	print(timeit.timeit("test()", setup="from __main__ import test", number=1))
 
 
 

@@ -3,7 +3,7 @@ import numpy as nm
 import re
 
 def test():
-	df = pandas.read_csv("../sample_data_set.csv")
+	df = pandas.read_csv("../sample_data_set/Sheet1.csv")
 	print len(df)
 	df1 = df.dropna(axis = 1)
 	y = Series(df['CAID'].unique())
@@ -16,7 +16,7 @@ def test():
 	df2 = DataFrame
 	df3 = DataFrame()
 	df6 = DataFrame()
-	for i in range(0,10):
+	for i in range(0,leng):
 		
 		df2 = df1[df1['CAID'] == y[i]]
 		df3 = df3.append(df2, ignore_index=True)
@@ -59,6 +59,7 @@ def test():
 			
 			d = { 'CAID': Series(df2['CAID'][x[k]]),
 				   'Name': Series(" ".join(result[k])),
+				   'Pattern': result[k][0],
 				   }
 
 			#print len(result[k])
@@ -106,8 +107,7 @@ if __name__ == '__main__':
 
 """
 1.Make separate functions for all the loopings
-2.append to a dataframe
-3.check a method for pattern matching.(data matching techniques)
+2.check a method for pattern matching.(data matching techniques)
 
 """
 

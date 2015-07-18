@@ -3,30 +3,32 @@ import numpy as nm
 import re
 
 def test():
-	df = pandas.read_csv("../sample_data_set/Sheet1.csv")
+	df = pandas.read_csv("input.csv", error_bad_lines=False)
 	print len(df)
-	df1 = df.dropna(axis = 1)
+	df = df.dropna(axis = 0)
 	y = Series(df['CAID'].unique())
 	
 	#print y[345]
 	total = 0
 	leng = len(y)
 	print leng
+	
 	countx = 0
 	df2 = DataFrame
 	df3 = DataFrame()
 	df6 = DataFrame()
+	
 	for i in range(0,leng):
 		
-		df2 = df1[df1['CAID'] == y[i]]
+		df2 = df[df['CAID'] == y[i]]
 		df3 = df3.append(df2, ignore_index=True)
 		x = df2.index
-		#print x
-		
-		data_len = len(df2)
+		print x
+		#data_len = len(df2)
 		#print data_len
 		
-		#df3.to_csv("output2.csv")
+		#df3.to_csv("output_query.csv")
+	
 		#print len(df3)
 		
 		"""	
@@ -42,19 +44,18 @@ def test():
 				
 			#result = Series(re.split("\\W+|\\s+|\\d+", df2.loc[x1, 'Name']))
 			#result = re.split("\\W+|\\s+|\\d+", df2.loc[x1, 'Name'])
-			result.append(re.split("\\W+|\\s+|\\d+", df2.loc[x1, 'Name']))
-			
-		
-		
-		
+			result.append(re.split("\\W+|\\s+", df2.loc[x1, 'Name']))
+		result.append([''])
+		print result
+		print len(result)
 		sum = 0
 		k = 0
 		df4 = DataFrame()
 		df5 = DataFrame()
+		
 		while k < len(result)-1:
 			#By default each Merchant name occurs 1 time
 			count = 1 
-			
 			#print "CAID: " + str(df2['CAID'][x[k]]) + "," + "result: " + " ".join(result[k])
 			
 			d = { 'CAID': Series(df2['CAID'][x[k]]),
@@ -63,18 +64,24 @@ def test():
 				   }
 
 			#print len(result[k])
-			
-			if result[k][0] == result[k+1][0]:
-				count += 1
-				for j in range(k+1, len(result)-1):
-					if result[j][0] == result[j+1][0]:
-						count += 1
-					else:
-						break
-				k += count
-			else:
-				count = 1
-				k += 1
+			try:
+				
+				if result[k][0] == result[k+1][0]:
+					count += 1
+				
+					for j in range(k+1, len(result)-1):
+						if result[j][0] == result[j+1][0]:
+							count += 1
+						else:
+							break
+						
+					k += count
+				else:
+					count = 1
+					k += 1
+			except IndexError:
+				print 'Index error..!!' + str(IndexError)
+				break
 			
 			d['count'] = count
 			df4 = DataFrame(d)
@@ -87,17 +94,17 @@ def test():
 		df6 = df6.append(df5, ignore_index=True)
 		
 		if count == 1:
-			df4['CAID'] = df2['CAID'][x[k]]
-			df4['Name'] = " ".join(result[k])
-			df4['count'] = count
+			#df4['CAID'] = df2['CAID'][x[k]]
+			#df4['Name'] = " ".join(result[k])
+			#df4['count'] = count
 			countx +=1
 		total += sum
 		print "total: " +str(total)
 	#print df6	
-	df6.to_csv("output_count.csv")	
+	df6.to_csv("output_count_query.csv")	
 	print "count: "+str(countx)
 	
-		
+	
 
 if __name__ == '__main__':
 	import timeit

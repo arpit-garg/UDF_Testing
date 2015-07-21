@@ -2,13 +2,15 @@ from pandas import *
 import numpy as nm
 import re
 
+"""
 def temp_func(temp):
-	for i in range(0,len(temp)):
+	for i,j in zip(range(0,len(temp)),range(len(1,temp[i]))):
+		if temp[i][j] == temp
 		
-	
+"""	
 
 def test():
-	df = pandas.read_csv("../sample_data_set/Sheet1.csv", error_bad_lines=False)
+	df = pandas.read_csv("../../sample_data_set.csv", error_bad_lines=False)
 	#print len(df)
 	#df = df.dropna(axis = 0)
 	y = Series(df['CAID'].unique())
@@ -23,7 +25,7 @@ def test():
 	df3 = DataFrame()
 	df6 = DataFrame()
 	
-	for i in range(0,3):
+	for i in range(0,leng):
 		
 		df2 = df[df['CAID'] == y[i]]
 		df3 = df3.append(df2, ignore_index=True)
@@ -32,7 +34,7 @@ def test():
 		#data_len = len(df2)
 		#print data_len
 		
-		#df3.to_csv("output_query.csv")
+		#df3.to_csv("output1.csv")
 	
 		#print len(df3)
 		
@@ -61,36 +63,22 @@ def test():
 		while k < len(result)-1:
 			#By default each Merchant name occurs 1 time
 			count = 1 
-			temp = []
+			
 			#print "CAID: " + str(df2['CAID'][x[k]]) + "," + "result: " + " ".join(result[k])
 			
 			d = { 'CAID': Series(df2['CAID'][x[k]]),
 				   'Name': Series(" ".join(result[k])),
 				   'Pattern': result[k][0],
 				   }
-
-			#print len(result[k])
-			try:
+			j = k+1	   
+			if j < (len(result)-1):
 				
-				if result[k][0] == result[k+1][0]:
+				while result[k][0] == result[j][0]:
 					count += 1
-					temp.append(result[k])
-					for j in range(k+1, len(result)-1):
-						if result[j][0] == result[j+1][0]:
-							temp.append(result[j])
-							tempd = temp_func(temp)
-							count += 1
-						else:
-							break
-						
-					k += count
-					print temp
-				else:
-					count = 1
-					k += 1
-			except IndexError:
-				print 'Index error..!!' + str(IndexError)
-				break
+					j +=1
+		
+			k += count
+			
 			
 			
 			d['count'] = count
@@ -106,9 +94,9 @@ def test():
 		if count == 1:
 			countx +=1
 		total += sum
-		#print "total: " +str(total)
+		print "total: " +str(total)
 	#print df6	
-	#df6.to_csv("output_count.csv")	
+	df6.to_csv("output_count1.csv")	
 	#print "count: "+str(countx)
 	
 	

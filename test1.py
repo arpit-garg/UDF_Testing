@@ -5,18 +5,23 @@ import re
 
 
 def temp_func(temp1, temp2):
-	indexes=[]
+	index1,index2=[],[]
 	print temp1,temp2
 	for i in temp1:
 		if i in temp2:
-			indexes.append(temp1.index(i))
+			index1.append(temp1.index(i))
+			index2.append(temp2.index(i))
 			#print temp1.index(i)
-	m = len(set(temp1)&set(temp2))/len(set(temp1)|set(temp2))
-	return (m,indexes)
+	#m = len(set(temp1)&set(temp2))/len(set(temp1)|set(temp2))
+	m = len(set(temp1)&set(temp2))
+	index = list(set(index1)&set(index2))
+	#return (m,index1,index2)
+	print 'index: '+str(index)
+	return (m,index)
 
 
 def test():
-	df = pandas.read_csv("../sample_data_set/Sheet1.csv", error_bad_lines=False)
+	df = pandas.read_csv("../../sample_data_set.csv", error_bad_lines=False)
 	#print len(df)
 	#df = df.dropna(axis = 0)
 	y = Series(df['CAID'].unique())
@@ -92,20 +97,30 @@ def test():
 				else:
 					k += 1
 			
-			except 	IndexError:
-				print 'exception'
+			except 	IndexError,e:
+				print 'exception: ' + e
 				continue
 			
 			#print temp
+			stopwords = ['the']
 			
 			if temp is not None:
+				match = []
+				indices = []
 				#temp.append([''])
 				for i in range(len(temp)-1):
-					m, indexes = (temp_func(temp[i], temp[i+1]))
-					print m, indexes
-					if m>0:
-						count_match+=1	
-			print count_match
+					#m.append(), index1,index2 =  (temp_func(temp[i], temp[i+1]))
+					m, index =  (temp_func(temp[i], temp[i+1]))
+					match.append(m)
+					indices.append(index)
+					#print m, index1, index2
+				for i in range(len(match)):
+					if match[i]>1:
+						count_match+=1
+						indxs=max(indices)
+						#for ind in indxs:
+						#	patt = temp
+			print "count: "+ str(count_match)
 					
 					
 					

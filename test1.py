@@ -23,41 +23,30 @@ def temp_func(temp1, temp2):
 
 
 def test():
-	df = pandas.read_csv("../sample_data_set/Sheet1.csv", error_bad_lines=False)
+	df = pandas.read_csv("sample_data_set.csv", error_bad_lines=False)
 	#print len(df)
 	#df = df.dropna(axis = 0)
-	y = Series(df['CAID'].unique())
+	unique_ids = Series(df['CAID'].unique())
 	
 	#print y[345]
-	#total = 0
-	leng = len(y)
+	total_unique_ids = len(unique_ids)
 	#print leng
 	
-	#countx = 0
 	df2 = DataFrame
 	df3 = DataFrame()
 	df6 = DataFrame()
 	
-	for i in range(0,leng):
+	for i in range(0,total_unique_ids):
 		
-		df2 = df[df['CAID'] == y[i]]
-		#df3 = df3.append(df2, ignore_index=True)
+		df2 = df[df['CAID'] == unique_ids[i]]
+		df3 = df3.append(df2, ignore_index=True)
 		x = df2.index
 		#print x
 		#data_len = len(df2)
 		#print data_len
 		
 		#df3.to_csv("output1.csv")
-	
-		#print len(df3)
-		
-		"""	
-		first_index = x[0]
-		first_name = df1['Name'][x[2]]
-		print first_name
-		name1_len = len(first_name)
-		print name1_len
-		"""
+
 	
 		result = []
 		for x1 in x:
@@ -68,18 +57,15 @@ def test():
 		result.append([''])
 		#print result
 		#print len(result)
-		#sum = 0
 		k = 0
 		df4 = DataFrame()
 		df5 = DataFrame()
 		
 		while k < len(result)-1:
 			#By default each Merchant name occurs 1 time
-			count = 1
-			count_match=1
+			count_match = 1
 			token=1
 			temp = []
-			pattern=[]
 			pattern=result[k]
 
 			#print "CAID: " + str(df2['CAID'][x[k]]) + "," + "result: " + " ".join(result[k])
@@ -93,75 +79,56 @@ def test():
 					for j in range(k, len(result)-1):
 						if result[j][0] == result[j+1][0]:
 							temp.append(result[j])
-							count+=1
 						else:
 							break
 					temp.append(result[j])
-					#k += count
-				#else:
-				#	k += 1
-			
+
 			except 	IndexError,e:
 				print 'exception: ' + e
 				continue
 			
 			#print temp
 			stopwords = ['the']
-			
+			flag=0
 			if temp is not None:
-				match1 = []
-				match2 = []
-				indices1 = []
-				indices2 = []
 				tokens=[]
 				#temp.append([''])
 				for i in range(len(temp)-1):
 					m, index,token =  (temp_func(temp[i], temp[i+1]))
 					if m>1:
-						match1.append(m)
-						indices1.append(index)
 						tokens.append(token)
-						pattern=max(tokens)
-						count_match+=1				
+						pattern1=max(tokens)
+						count_match+=1			
+						flag=1	
 					else:
-						if token[0] not in stopwords:
+						if token[0].lower() not in stopwords:
 							count_match+=1
-							pattern=token
+							pattern1=token
+							flag=1
 						else:
 							pattern=temp[i]			
 			k+=count_match			
 			#print "count: "+ str(count_match)
 			#print "pattern: "+ str(pattern)
-						
-			d['Pattern'] = str(pattern)	
+			
+			if flag==1:
+				d['Pattern'] = str(pattern1)	
+			else:
+				d['Pattern'] = str(pattern)
 			d['count'] = count_match
+			
 			df4 = DataFrame(d)
-			
 			df5 = df5.append(df4)
-			#sum += count
-			#print "count: "+ str(count)
-			
 		
 		df6 = df6.append(df5, ignore_index=True)
 		
 		
-		#total += sum
-		#print "total: " +str(total)
 	#print df6	
 	df6.to_csv("output_update.csv")	
-	#print "count: "+str(countx)
-	
+
 	
 
 if __name__ == '__main__':
 	import timeit
 	print(timeit.timeit("test()", setup="from __main__ import test", number=1))
-
-
-
-"""
-1.Make separate functions for all the loopings
-2.check a method for pattern matching.(data matching techniques)
-
-"""
 
